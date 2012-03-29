@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" 
+    android:baselineAligned="false">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/vv_main_lay"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/vv_display_varsel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:baselineAligned="false">
+
+            <LinearLayout
+                android:id="@+id/vv_output_frame"
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                android:layout_weight="0.93"  >
+
+                    <TextView
+                        android:id="@+id/vv_output"
+                        android:layout_width="11dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                    <com.guitartool.chordbase.VariantView
+                        android:id="@+id/variantView1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            
+
+            <LinearLayout
+                android:id="@+id/vv_variant"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:orientation="vertical" android:baselineAligned="false">
+
+                <TextView
+                    android:id="@+id/vv_variantTf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/vv_variantTf"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <Spinner
+                    android:id="@+id/vv_variantSp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/vv_chordNames"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <LinearLayout
+                android:id="@+id/noteWraper"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/chordbaseNoteLbl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chNoteLbl"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <Spinner
+                    android:id="@+id/noteIdSp"
+                    android:layout_width="118dp"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/notes" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/chordWraper"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/chordbaseChordIdLbl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/chChordLbl"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <Spinner
+                    android:id="@+id/chordIdSp"
+                    android:layout_width="118dp"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/chords" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/showBtn"
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:layout_gravity="center"
+                android:text="@string/chShowBtn" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/chordbaseNameStringLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/chInputLbl"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/chordbaseNameStringTf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine" />
+    </LinearLayout>
+
+</LinearLayout>
