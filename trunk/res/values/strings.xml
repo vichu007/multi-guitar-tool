@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, MainActivity!</string>
+    <string name="app_name">Guitar Multi-tool</string>
+    
+    <!-- main layout strings -->
+    <string name="mainMetronomeBtn">Metronome</string>
+    <string name="mainTunerBtn">Guitar Tuner</string>
+    <string name="mainChordbaseBtn">ChordBase</string>
+    <string name="mainOptionsBtn">Options</string>
+    <string name="mainAboutBtn">About</string>
+    
+    <!-- chord_db lay strings -->
+    <string name="chInputLbl">Podaj nazwę akordu</string>
+    <string name="chNoteLbl">Nazwa dźwięku</string>
+    <string name="chNoteTf">1</string>
+    <string name="chChordLbl">Nazwa chwytu</string>
+    <string name="chChordTf">1</string>
+    <string name="chShowBtn">POKAŻ</string>
+    <string name="chTv2">Output</string>
+    <string name="chChVarTf">Wariant</string>
+    <string name="alert_wrong_chord_title">Nieprawidłowa nazwa chwytu!</string>
+    <string name="alert_wrong_chord_ok">OK</string>
+    <string name="alert_wrong_chord_msg">Wprowadź poprawną nazwę w pole tekstowe, lub skorzystaj z listy.</string>
+    <!-- VariantView strings -->
+    <string name="vv_variantTf">Wariant</string>
+    
+    <!-- metronome lay strings -->
+    <string name="mMinusBtn">-</string>
+    <string name="mPlusBtn">+</string>
+    
+    
+    <!-- inne layouty (nieskończne) -->
+    <string name="oBackBtn">Powrót</string>
+    
+    <!-- string - array -->
+    <!--	CHORDBASE	-->
+    
+    <!-- nazwy dźwięków -->
+    <string-array name="notes">
+        <item>A</item>
+        <item>A#</item>
+        <item>B</item>
+        <item>C</item>
+        <item>C#</item>
+        <item>D</item>
+        <item>D#</item>
+        <item>E</item>
+        <item>F</item>
+        <item>F#</item>
+        <item>G</item>
+        <item>G#</item>
+    </string-array>
+    
+    <!-- nazwy akordów do bazy chwytów-->
+    <string-array name="chords">
+        <item>aug</item>
+		<item>+</item>
+		<item>+5</item>
+		<item>-</item>
+		<item>-5</item>
+		<item>2</item>
+		<item>sus</item>
+		<item>sus4</item>
+		<item>sus7</item>
+		<item>sus9</item>
+		<item>11</item>
+		<item>6</item>
+		<item>7</item>
+		<item>-57</item>
+		<item>5-7</item>
+		<item>+57</item>
+		<item>7+5</item>
+		<item>maj</item>
+		<item>maj7</item>
+		<item>+7</item>
+		<item>9</item>
+		<item>add9</item>
+		<item>69</item>
+		<item>96</item>
+		<item>6(add9)</item>
+		<item>-9</item>
+		<item>-5-9</item>
+		<item>-9-5</item>
+		<item>+5-9</item>
+		<item>-9+5</item>
+		<item>+9</item>
+		<item>maj9</item>
+		<item>maj79</item>
+		<item>+79</item>
+		<item>9+7</item>
+		<item>+11</item>
+		<item>-59</item>
+		<item>9-5</item>
+		<item>13</item>
+		<item>-913</item>
+		<item>13-9</item>
+		<item>maj13</item>
+		<item>maj713</item>
+		<item>13+7</item>
+		<item>+713</item>
+		<item>m</item>
+		<item>m-</item>
+		<item>m-5</item>
+		<item>m-57</item>
+		<item>m7-5</item>
+		<item>dim</item>
+		<item>m-5-7</item>
+		<item>m-7-5</item>
+		<item>m6</item>
+		<item>m7</item>
+		<item>m(maj)</item>
+		<item>m(maj7)</item>
+		<item>m+7</item>
+		<item>m9</item>
+		<item>m79</item>
+		<item>m97</item>
+		<item>m69</item>
+		<item>m96</item>
+		<item>m+9</item>
+		<item>m(maj9)</item>
+		<item>m(maj79)</item>
+		<item>m+79</item>
+		<item>m9+7</item>
+		<item>m11</item>
+    </string-array>
+    
+    <!--	METRONOME	-->
+    <!-- oznaczenia metrum do metronomu -->
+    <string-array name="metra">
+        <item>1/4</item>
+        <item>2/4</item>
+        <item>3/4</item>
+        <item>4/4</item>
+        <item>5/4</item>
+        <item>3/8</item>
+        <item>5/8</item>
+        <item>6/8</item>
+        <item>7/8</item>
+        <item>9/8</item>
+        
+    </string-array>
+</resources>
