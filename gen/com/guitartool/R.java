@@ -81,14 +81,15 @@ containing a value of this type.
         public static final int m_upbeat_sp=0x7f080026;
         public static final int metronomeBackBtn=0x7f080028;
         public static final int metronomeBtn=0x7f080016;
+        public static final int metronomeView=0x7f080029;
         public static final int noteIdSp=0x7f08000d;
         public static final int noteWraper=0x7f08000b;
         public static final int showBtn=0x7f080011;
         public static final int testView=0x7f08001e;
-        public static final int textView1=0x7f08002a;
-        public static final int tunerBackBtn=0x7f08002b;
+        public static final int textView1=0x7f08002b;
+        public static final int tunerBackBtn=0x7f08002c;
         public static final int tunerBtn=0x7f080017;
-        public static final int tunerFrameLayout1=0x7f080029;
+        public static final int tunerFrameLayout1=0x7f08002a;
         public static final int variantView1=0x7f080004;
         public static final int vv_chordNames=0x7f080008;
         public static final int vv_display_varsel=0x7f080001;
@@ -104,7 +105,9 @@ containing a value of this type.
         public static final int loading=0x7f030001;
         public static final int main=0x7f030002;
         public static final int metronome=0x7f030003;
-        public static final int tuner=0x7f030004;
+        public static final int metronome2=0x7f030004;
+        public static final int tuner=0x7f030005;
+        public static final int variant_lay=0x7f030006;
     }
     public static final class raw {
         public static final int da_click=0x7f050000;
