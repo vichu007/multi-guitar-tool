@@ -39,9 +39,6 @@ public class ClickView extends View {
 	private long mClickDelay, mLastClick;
 	
 	private RefreshHandler mRedrawHandler = new RefreshHandler();
-
-
-	
 	
 	class RefreshHandler extends Handler {
 
@@ -117,15 +114,19 @@ public class ClickView extends View {
 
 	public void update() {
         if (run) {
-            playBeat();
-            clearGrid();
-            nextClick();
-            //mLastClick = now;
-            step++;
+        	long now = System.currentTimeMillis();
+        	if (now - mLastClick > mClickDelay) {
+        		playBeat();
+            	clearGrid();
+            	nextClick();
+            	mLastClick = now;
+            	step++;
+        	}
             mRedrawHandler.sleep(mClickDelay);
         }
 
     }
+	
 	private void playBeat(){
 		if(step == upbeat){
 			bellMP.start();

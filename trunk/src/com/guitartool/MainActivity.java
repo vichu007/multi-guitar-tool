@@ -3,10 +3,12 @@ package com.guitartool;
 
 import com.guitartool.chordbase.ChordBase;
 import com.guitartool.metronome.Metronome;
+import com.guitartool.metronome2.Metronome2;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -27,7 +29,13 @@ public class MainActivity extends Activity {
     	optionsBtn	 = (Button) this.findViewById(R.id.general_optionsBtn);
     	aboutBtn	 = (Button) this.findViewById(R.id.aboutBtn);
     	initButtonsOnClickListeners();
-    	
+    }
+    
+    public boolean onKeyDown(int keyCode, KeyEvent msg) {
+    	if(keyCode == KeyEvent.KEYCODE_BACK){
+    		finish();
+    	}
+    	return super.onKeyDown(keyCode, msg);
     }
     
 	private void initButtonsOnClickListeners() {
@@ -77,8 +85,8 @@ public class MainActivity extends Activity {
 	}
 
 	private void openTunerAct() {
-		//Intent intent = new Intent(getApplicationContext(), Metronome.class);
-		//startActivity(intent);
+		Intent intent = new Intent(getApplicationContext(), Metronome2.class);
+		startActivity(intent);
 	}
 	
 	private void openChordbaseAct(){
