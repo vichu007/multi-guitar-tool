@@ -4,26 +4,60 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <FrameLayout
-        android:id="@+id/tunerFrameLayout1"
-        android:layout_width="fill_parent"
-        android:layout_height="100dp"
-        android:layout_gravity="center" >
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/textView1"
+    <LinearLayout
+        android:id="@+id/linearLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/mainTunerBtn"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_weight="0.40" >
 
-    <Button
-        android:id="@+id/tunerBackBtn"
-        android:layout_width="200dp"
+        <TextView
+            android:id="@+id/tunerNoteTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/tunerFreqTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/oBackBtn" />
+        android:layout_weight="0.10"
+        android:orientation="vertical" >
+
+        <ToggleButton
+            android:id="@+id/tunerToggleBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="ToggleButton" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/mainTunerBtn"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <Button
+            android:id="@+id/tunerBackBtn"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/oBackBtn" />
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -17,6 +17,7 @@ public class VariantView extends View {
 	private Chord chord;
 	private TextView textView;
 
+	private static final int MARKER_SIZE = 30;
 	private static final int FINGER_1_MARKER = 1;
 	private static final int FINGER_2_MARKER = 2;
 	private static final int FINGER_3_MARKER = 3;
@@ -33,7 +34,8 @@ public class VariantView extends View {
 	private int[][] grid;
 	private int[] frets, fingers;
 	private final Paint mPaint = new Paint();
-
+	private int xOffset, yOffset, xSize, ySize, yFirstRow, picSize;
+	
 	public void update() {
 		clearGrid();
 	}
@@ -49,20 +51,21 @@ public class VariantView extends View {
 	}
 
 	private void initialize() {
+		picSize = MARKER_SIZE;
 		mMarkerArray = new Bitmap[11];
 		Resources r = this.getContext().getResources();
-		setBackgroundDrawable(r.getDrawable(R.drawable.gryf));
-		loadMarker(FINGER_1_MARKER, r.getDrawable(R.drawable.marker1));
-		loadMarker(FINGER_2_MARKER, r.getDrawable(R.drawable.marker2));
-		loadMarker(FINGER_3_MARKER, r.getDrawable(R.drawable.marker3));
-		loadMarker(FINGER_4_MARKER, r.getDrawable(R.drawable.marker4));
-		loadMarker(BASE_1_MARKER, r.getDrawable(R.drawable.base1));
-		loadMarker(BASE_2_MARKER, r.getDrawable(R.drawable.base2));
-		loadMarker(BASE_3_MARKER, r.getDrawable(R.drawable.base3));
-		loadMarker(BASE_4_MARKER, r.getDrawable(R.drawable.base4));
-		loadMarker(BASE_0_MARKER, r.getDrawable(R.drawable.base0));
-		loadMarker(OPEN_MARKER, r.getDrawable(R.drawable.marker0));
-		loadMarker(X_MARKER, r.getDrawable(R.drawable.markerx));
+		setBackgroundDrawable(r.getDrawable(R.drawable.bckv1));
+		loadMarker(FINGER_1_MARKER, r.getDrawable(R.drawable.cb_g1));
+		loadMarker(FINGER_2_MARKER, r.getDrawable(R.drawable.cb_g2));
+		loadMarker(FINGER_3_MARKER, r.getDrawable(R.drawable.cb_g3));
+		loadMarker(FINGER_4_MARKER, r.getDrawable(R.drawable.cb_g4));
+		loadMarker(BASE_1_MARKER, r.getDrawable(R.drawable.cb_v1));
+		loadMarker(BASE_2_MARKER, r.getDrawable(R.drawable.cb_v2));
+		loadMarker(BASE_3_MARKER, r.getDrawable(R.drawable.cb_v3));
+		loadMarker(BASE_4_MARKER, r.getDrawable(R.drawable.cb_v4));
+		loadMarker(BASE_0_MARKER, r.getDrawable(R.drawable.cb_v0));
+		loadMarker(OPEN_MARKER, r.getDrawable(R.drawable.cb_g0));
+		loadMarker(X_MARKER, r.getDrawable(R.drawable.cb_x));
 		grid = new int[6][5];
 		clearGrid();
 		frets = new int[6];
@@ -79,22 +82,44 @@ public class VariantView extends View {
 	}
 
 	public void loadMarker(int key, Drawable marker) {
-		Bitmap bitmap = Bitmap.createBitmap(40, 40, Bitmap.Config.ARGB_8888);
+		Bitmap bitmap = Bitmap.createBitmap(picSize, picSize, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
-		marker.setBounds(0, 0, 40, 40);
+		marker.setBounds(0, 0, picSize, picSize);
 		marker.draw(canvas);
 
 		mMarkerArray[key] = bitmap;
 	}
 
+	@Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+		xOffset		= (int) (35 * w / 320) - picSize /2;
+		yOffset		= (int) (90 * h /450) - picSize /2;
+		xSize		= (int) 50 * w / 320;
+		ySize		= (int) 100 * h / 450;
+		yFirstRow	= (int) (20 * h / 450) - picSize /2;
+	}
+	
 	public void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		for (int x = 0; x < 6; x++) {
+			
 			for (int y = 0; y < 5; y++) {
-				if (grid[x][y] > -1) {
-					canvas.drawBitmap(mMarkerArray[grid[x][y]], 20 + x * 48, 1
-							+ y * 80 + y * y * 4, mPaint);
+				if (y==0){
+					if (grid[x][y] > -1) {
+						canvas.drawBitmap(mMarkerArray[grid[x][y]],
+										  xOffset + x * xSize,
+										  yFirstRow, mPaint);
+					}
 				}
+				else{
+					if (grid[x][y] > -1) {
+						canvas.drawBitmap(mMarkerArray[grid[x][y]],
+										  xOffset + x * xSize,
+										  yOffset + y * ySize,
+										  mPaint);
+					}
+				}
+				
 			}
 		}
 	}
