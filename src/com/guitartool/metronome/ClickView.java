@@ -9,9 +9,11 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -32,26 +34,18 @@ public class ClickView extends View {
 	private static final int DOWNBEAT_OFF = 0;
 	private static final int DOWNBEAT_ON = 1;
 
-	private int tempo, metrum_base, metrum_count, upbeat, xOffset, yOffset, step;
+	private int metrum_base, metrum_count, upbeat, xOffset, yOffset, step;
 	private int mSize = 40;
 	private int[] grid;
-	private boolean run;
-	private long mClickDelay, mLastClick;
 	
-	private RefreshHandler mRedrawHandler = new RefreshHandler();
+	public RefreshHandler mRedrawHandler = new RefreshHandler();
 	
 	class RefreshHandler extends Handler {
 
 		@Override
-	    public void handleMessage(Message msg) {
-			//ClickView.this.playBeat();
+	    public void handleMessage(Message msg) {			
 			ClickView.this.update();
 			ClickView.this.invalidate();
-		}
-
-		public void sleep(long delayMillis) {
-			this.removeMessages(0);
-			sendMessageDelayed(obtainMessage(0), delayMillis);
 		}
 	};
 	
@@ -66,13 +60,11 @@ public class ClickView extends View {
 	}
 
 	private void initialize() {
-		run = false;
-		step = 0;
-		tempo = 100;
-		setCount(8);
+		step = -1;
+		setCount(4);
 		upbeat = 0;
+		grid = new int[metrum_count];
 		mMarkerArray = new Bitmap[4];
-		mClickDelay = 60000/tempo;
 		xOffset = (int) (this.getWidth() / 2 - metrum_count*1.2*mSize);
 		clearGrid();
 		Resources r =this.getContext().getResources();
@@ -80,27 +72,31 @@ public class ClickView extends View {
 		loadMarker(UPBEAT_ON, r.getDrawable(R.drawable.m1red));
 		loadMarker(DOWNBEAT_OFF, r.getDrawable(R.drawable.m0green));
 		loadMarker(DOWNBEAT_ON, r.getDrawable(R.drawable.m1green));
-		clickMP	= MediaPlayer.create(this.getContext(), R.raw.da_click);
-		bellMP	= MediaPlayer.create(this.getContext(), R.raw.u_click);
+		clickMP	= MediaPlayer.create(this.getContext(), R.raw.click);
+		bellMP	= MediaPlayer.create(this.getContext(), R.raw.bell);
 		
+		clickMP.setOnCompletionListener(new OnCompletionListener() {
+		    public void onCompletion(MediaPlayer arg0) {
+		        
+		    }
+		});
+		bellMP.setOnCompletionListener(new OnCompletionListener() {
+		    public void onCompletion(MediaPlayer arg0) {
+		        //Log.i("loguje","koniec pliku");
+		    }
+		});
 	}
 	
 	public void setTestView(TextView tv){
 		testView = tv;
 	}
 	public void reset(){
-		if(run){
-			run = false;
-			clearGrid();
-			step = 0;
-			mClickDelay = 60000/tempo;
-			run = true;
-		}else{
-			run = true;
-			clearGrid();
-			step = 0;
-			run = false;
-		}
+		grid = new int [metrum_count];
+		xOffset = (int) ((this.getWidth() / 2) - metrum_count*0.6*mSize);
+		if(xOffset < 0) xOffset = 0;
+		clearGrid();
+		step = -1;
+		this.invalidate();
 	}
 
 	public void clearGrid() {
@@ -113,22 +109,16 @@ public class ClickView extends View {
 	}
 
 	public void update() {
-        if (run) {
-        	long now = System.currentTimeMillis();
-        	if (now - mLastClick > mClickDelay) {
-        		playBeat();
-            	clearGrid();
-            	nextClick();
-            	mLastClick = now;
-            	step++;
-        	}
-            mRedrawHandler.sleep(mClickDelay);
-        }
-
-    }
+	    step++;
+	    if(!Metronome.TEST){
+	    	playBeat();
+	    }
+	    clearGrid();
+	    nextClick();
+	}
 	
 	private void playBeat(){
-		if(step == upbeat){
+		if(step % metrum_count == upbeat){
 			bellMP.start();
 		}else{
 			clickMP.start();
@@ -149,6 +139,12 @@ public class ClickView extends View {
 		mMarkerArray[key] = bitmap;
 	}
 
+	@Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+		xOffset = (int) (w / 2 - metrum_count*1.2*mSize);
+		yOffset = 0;
+	}
+	
 	public void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		for (int x = 0; x < metrum_count; x++) {
@@ -159,6 +155,10 @@ public class ClickView extends View {
 								  mPaint);
 			}
 		}
+	}
+	public void releaseMP(){
+		clickMP.release();
+		bellMP.release();
 	}
 	
 	public void setBase(int base){
@@ -184,31 +184,8 @@ public class ClickView extends View {
 		return metrum_count;
 	}
 	
-	public void setTempo(int t) {
-		tempo = t;
+	public int getStep(){
+		return step;
 	}
-	
-	public void increseTempo(){
-		if(tempo < Metronome.MAX_BPM){
-			tempo++;
-		}
-	}
-	
-	public void decreseTempo(){
-		if(tempo>0){
-			tempo--;
-		}
-	}
-	
-	public int getTempo(){
-		return tempo;
-	}
-	
-	public void setRun(boolean r){
-		run = r;
-	}
-	
-	public boolean isRunning(){
-		return run;
-	}
+
 }

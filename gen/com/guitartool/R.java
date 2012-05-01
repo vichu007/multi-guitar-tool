@@ -33,25 +33,25 @@ containing a value of this type.
         public static final int tileSize=0x7f010000;
     }
     public static final class drawable {
-        public static final int base0=0x7f020000;
-        public static final int base1=0x7f020001;
-        public static final int base2=0x7f020002;
-        public static final int base3=0x7f020003;
-        public static final int base4=0x7f020004;
-        public static final int gryf=0x7f020005;
-        public static final int icon=0x7f020006;
-        public static final int loading=0x7f020007;
-        public static final int m0green=0x7f020008;
-        public static final int m0red=0x7f020009;
-        public static final int m1green=0x7f02000a;
-        public static final int m1red=0x7f02000b;
-        public static final int marker0=0x7f02000c;
-        public static final int marker1=0x7f02000d;
-        public static final int marker2=0x7f02000e;
-        public static final int marker3=0x7f02000f;
-        public static final int marker4=0x7f020010;
-        public static final int markerek=0x7f020011;
-        public static final int markerx=0x7f020012;
+        public static final int bckv1=0x7f020000;
+        public static final int bckver2=0x7f020001;
+        public static final int cb_g0=0x7f020002;
+        public static final int cb_g1=0x7f020003;
+        public static final int cb_g2=0x7f020004;
+        public static final int cb_g3=0x7f020005;
+        public static final int cb_g4=0x7f020006;
+        public static final int cb_v0=0x7f020007;
+        public static final int cb_v1=0x7f020008;
+        public static final int cb_v2=0x7f020009;
+        public static final int cb_v3=0x7f02000a;
+        public static final int cb_v4=0x7f02000b;
+        public static final int cb_x=0x7f02000c;
+        public static final int icon=0x7f02000d;
+        public static final int loading=0x7f02000e;
+        public static final int m0green=0x7f02000f;
+        public static final int m0red=0x7f020010;
+        public static final int m1green=0x7f020011;
+        public static final int m1red=0x7f020012;
     }
     public static final class id {
         public static final int aboutBtn=0x7f08001b;
@@ -81,15 +81,16 @@ containing a value of this type.
         public static final int m_upbeat_sp=0x7f080026;
         public static final int metronomeBackBtn=0x7f080028;
         public static final int metronomeBtn=0x7f080016;
-        public static final int metronomeView=0x7f080029;
         public static final int noteIdSp=0x7f08000d;
         public static final int noteWraper=0x7f08000b;
         public static final int showBtn=0x7f080011;
         public static final int testView=0x7f08001e;
-        public static final int textView1=0x7f08002b;
-        public static final int tunerBackBtn=0x7f08002c;
+        public static final int textView1=0x7f08002c;
+        public static final int tunerBackBtn=0x7f08002d;
         public static final int tunerBtn=0x7f080017;
-        public static final int tunerFrameLayout1=0x7f08002a;
+        public static final int tunerFreqTv=0x7f08002a;
+        public static final int tunerNoteTv=0x7f080029;
+        public static final int tunerToggleBtn=0x7f08002b;
         public static final int variantView1=0x7f080004;
         public static final int vv_chordNames=0x7f080008;
         public static final int vv_display_varsel=0x7f080001;
@@ -105,13 +106,14 @@ containing a value of this type.
         public static final int loading=0x7f030001;
         public static final int main=0x7f030002;
         public static final int metronome=0x7f030003;
-        public static final int metronome2=0x7f030004;
-        public static final int tuner=0x7f030005;
-        public static final int variant_lay=0x7f030006;
+        public static final int tuner=0x7f030004;
+        public static final int variant_lay=0x7f030005;
     }
     public static final class raw {
-        public static final int da_click=0x7f050000;
-        public static final int u_click=0x7f050001;
+        public static final int bell=0x7f050000;
+        public static final int click=0x7f050001;
+        public static final int da_click=0x7f050002;
+        public static final int u_click=0x7f050003;
     }
     public static final class string {
         public static final int alert_wrong_chord_msg=0x7f060011;

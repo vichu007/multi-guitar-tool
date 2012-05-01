@@ -29,7 +29,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout3"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="200dp"
         android:layout_weight="0.03"
         android:orientation="vertical" >
@@ -50,7 +50,7 @@
             <FrameLayout
                 android:id="@+id/frameLayout1"
                 android:layout_width="60dp"
-                android:layout_height="match_parent" >
+                android:layout_height="fill_parent" >
 
                 <TextView
                     android:id="@+id/m_tempo_tv"

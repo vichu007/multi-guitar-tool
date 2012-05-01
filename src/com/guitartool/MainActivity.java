@@ -3,7 +3,7 @@ package com.guitartool;
 
 import com.guitartool.chordbase.ChordBase;
 import com.guitartool.metronome.Metronome;
-import com.guitartool.metronome2.Metronome2;
+import com.guitartool.tuner.TunerMain;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -85,7 +85,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void openTunerAct() {
-		Intent intent = new Intent(getApplicationContext(), Metronome2.class);
+		Intent intent = new Intent(getApplicationContext(), TunerMain.class);
 		startActivity(intent);
 	}
 	
