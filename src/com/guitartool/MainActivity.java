@@ -7,6 +7,8 @@ import com.guitartool.tuner.TunerMain;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -16,24 +18,32 @@ import android.widget.Button;
 public class MainActivity extends Activity {
 	private Button metronomeBtn,
 				   tunerBtn,
-				   chordDbBtn,
-				   optionsBtn,
-				   aboutBtn;
+				   chordDbBtn;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        
+        Typeface tf = Typeface.createFromAsset(getAssets(),"fonts/bazgroly_b.ttf");
+        
         metronomeBtn = (Button) this.findViewById(R.id.metronomeBtn);
     	tunerBtn	 = (Button) this.findViewById(R.id.tunerBtn);
     	chordDbBtn	 = (Button) this.findViewById(R.id.chordbaseBtn);
-    	optionsBtn	 = (Button) this.findViewById(R.id.general_optionsBtn);
-    	aboutBtn	 = (Button) this.findViewById(R.id.aboutBtn);
+    	
+    	metronomeBtn.setTextColor(Color.WHITE);
+    	metronomeBtn.setTypeface(tf);
+    	tunerBtn.setTextColor(Color.WHITE);
+    	tunerBtn.setTypeface(tf);
+    	chordDbBtn.setTextColor(Color.WHITE);
+    	chordDbBtn.setTypeface(tf);
+    	
     	initButtonsOnClickListeners();
     }
     
     public boolean onKeyDown(int keyCode, KeyEvent msg) {
     	if(keyCode == KeyEvent.KEYCODE_BACK){
-    		finish();
+    		MainActivity.this.finish();
     	}
     	return super.onKeyDown(keyCode, msg);
     }
@@ -60,22 +70,6 @@ public class MainActivity extends Activity {
 				openChordbaseAct();
 			}
 		});
-		
-		optionsBtn.setOnClickListener(new OnClickListener()
-		{
-			public void  onClick(View v)
-			{
-				openOptionsAct();
-			}
-		});
-		
-		aboutBtn.setOnClickListener(new OnClickListener()
-		{
-			public void  onClick(View v)
-			{
-				openAboutAct();
-			}
-		});
 	}
 
 	private void openMetronomeAct() {
@@ -93,15 +87,4 @@ public class MainActivity extends Activity {
 		Intent intent = new Intent(getApplicationContext(), ChordBase.class);
 		startActivity(intent);
 	}
-	
-	private void openOptionsAct(){
-		//Intent intent = new Intent(getApplicationContext(), Metronome.class);
-		//startActivity(intent);
-	}
-	
-	private void openAboutAct(){
-		//Intent intent = new Intent(getApplicationContext(), Metronome.class);
-		//startActivity(intent);
-	}
-
 }

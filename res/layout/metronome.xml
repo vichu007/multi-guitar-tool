@@ -1,111 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:baselineAligned="false"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
-
-    <FrameLayout
-        android:id="@+id/clickview_frame"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/relativeLayout1"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="0.10" >
-
-        <com.guitartool.metronome.ClickView
-            android:id="@+id/clickView"
-            android:layout_width="wrap_content"
-            android:layout_height="42dp"
-            android:layout_gravity="center" />
+        android:layout_height="fill_parent"
+        android:gravity="center_horizontal" 
+        android:background="@drawable/metronome_bckg2">
 
         <TextView
             android:id="@+id/testView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:textAppearance="?android:attr/textAppearanceLarge" android:textSize="50dp"/>
 
-    </FrameLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="fill_parent"
-        android:layout_height="200dp"
-        android:layout_weight="0.03"
-        android:orientation="vertical" >
-
-        <LinearLayout
-            android:id="@+id/linearLayout1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" >
-
-            <Button
-                android:id="@+id/m_minus_btn"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:text="@string/mMinusBtn" />
-
-            <FrameLayout
-                android:id="@+id/frameLayout1"
-                android:layout_width="60dp"
-                android:layout_height="fill_parent" >
-
-                <TextView
-                    android:id="@+id/m_tempo_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
-            </FrameLayout>
-
-            <Button
-                android:id="@+id/m_plus_btn"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:text="@string/mPlusBtn" />
-        </LinearLayout>
-
-        <SeekBar
-            android:id="@+id/m_tempo_sb"
-            android:layout_width="294dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" >
-
-            <Spinner
-                android:id="@+id/m_metrum_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:entries="@array/metra" />
-
-            <Spinner
-                android:id="@+id/m_upbeat_sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
-
-            <ToggleButton
-                android:id="@+id/m_on_off_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
-        </LinearLayout>
+        <com.guitartool.metronome.ClickView
+            android:id="@+id/clickView"
+            android:layout_width="fill_parent"
+            android:layout_height="102dp"
+            android:layout_below="@+id/testView"
+            android:layout_centerHorizontal="true" />
 
         <Button
             android:id="@+id/metronomeBackBtn"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/orange_bar2"
             android:text="@string/oBackBtn" />
-    </LinearLayout>
 
-</LinearLayout>
+        <Spinner
+            android:id="@+id/m_upbeat_sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/metronomeBackBtn"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/orange_spinner" />
+
+        <Spinner
+            android:id="@+id/m_metrum_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/metronomeBackBtn"
+            android:background="@drawable/orange_spinner"
+            android:entries="@array/metra" />
+
+        <SeekBar
+            android:id="@+id/m_tempo_sb"
+            android:layout_width="296dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/m_upbeat_sp"
+            android:layout_centerHorizontal="true"
+            android:progress="0"
+            android:progressDrawable="@drawable/seekbar_progress"
+            android:secondaryProgress="0"
+            android:thumb="@drawable/seek_thumb_normal" />
+
+        <TextView
+            android:id="@+id/m_tempo_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/m_tempo_sb"
+            android:layout_alignTop="@+id/m_minus_btn"
+            android:layout_centerHorizontal="true"
+            android:text="Tempo"
+            android:textAppearance="?android:attr/textAppearanceLarge" android:textSize="50dp" android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/m_minus_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_above="@+id/m_tempo_sb"
+            android:layout_toLeftOf="@+id/m_tempo_tv"
+            android:background="@drawable/orange_btn"
+            android:text="@string/mMinusBtn" />
+
+        <ToggleButton
+            android:id="@+id/m_on_off_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/m_tempo_tv"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/btn_toggle" />
+
+        <Button
+            android:id="@+id/m_plus_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_above="@+id/m_tempo_sb"
+            android:layout_toRightOf="@+id/m_tempo_tv"
+            android:background="@drawable/orange_btn"
+            android:text="@string/mPlusBtn" />
+
+</RelativeLayout>

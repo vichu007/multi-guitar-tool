@@ -1,56 +1,61 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout1"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:background="@drawable/background" >
 
     <FrameLayout
-        android:id="@+id/frameLayout3"
+        android:id="@+id/LogoFrame"
         android:layout_width="fill_parent"
-        android:layout_height="100dp"
-        android:layout_gravity="center" >
+        android:layout_height="120dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/logo" >
     </FrameLayout>
 
     <Button
         android:id="@+id/metronomeBtn"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/mainMetronomeBtn"/>
+        android:layout_below="@+id/LogoFrame"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/orange_bar2"
+        android:text="@string/mainMetronomeBtn" />
+
+    <FrameLayout
+        android:id="@+id/FrameLayout01"
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/metronomeBtn">
+    </FrameLayout>
 
     <Button
         android:id="@+id/tunerBtn"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_alignLeft="@+id/metronomeBtn"
+        android:layout_below="@+id/FrameLayout01"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/orange_bar2"
         android:text="@string/mainTunerBtn" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout2"
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tunerBtn"
+        android:layout_centerVertical="true" >
+    </FrameLayout>
 
     <Button
         android:id="@+id/chordbaseBtn"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_below="@+id/frameLayout2"
+        android:background="@drawable/orange_bar2"
         android:onClick="chordBtnHandler"
+        android:layout_centerHorizontal="true"
         android:text="@string/mainChordbaseBtn" />
 
-    <FrameLayout
-        android:id="@+id/frameLayout2"
-        android:layout_width="fill_parent"
-        android:layout_height="75dp" >
-    </FrameLayout>
-
-    <Button
-        android:id="@+id/general_optionsBtn"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/mainOptionsBtn" />
-
-    <Button
-        android:id="@+id/aboutBtn"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/mainAboutBtn" />
-
-</LinearLayout>
+</RelativeLayout>

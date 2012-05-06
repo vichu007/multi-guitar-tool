@@ -25,7 +25,7 @@ import android.widget.TextView;
  */
 public class ClickView extends View {
 	private TextView testView;
-	private Bitmap[] mMarkerArray;
+	private Bitmap[] mMarkerArray = new Bitmap[4];
 	private final Paint mPaint = new Paint();
 	private MediaPlayer clickMP, bellMP;
 	
@@ -33,9 +33,10 @@ public class ClickView extends View {
 	private static final int UPBEAT_ON = 3;
 	private static final int DOWNBEAT_OFF = 0;
 	private static final int DOWNBEAT_ON = 1;
+	private static boolean TV_IS_OFF = false;
 
 	private int metrum_base, metrum_count, upbeat, xOffset, yOffset, step;
-	private int mSize = 40;
+	private int mSize = 60;
 	private int[] grid;
 	
 	public RefreshHandler mRedrawHandler = new RefreshHandler();
@@ -64,33 +65,39 @@ public class ClickView extends View {
 		setCount(4);
 		upbeat = 0;
 		grid = new int[metrum_count];
-		mMarkerArray = new Bitmap[4];
 		xOffset = (int) (this.getWidth() / 2 - metrum_count*1.2*mSize);
 		clearGrid();
+		/*
 		Resources r =this.getContext().getResources();
 		loadMarker(UPBEAT_OFF, r.getDrawable(R.drawable.m0red));
 		loadMarker(UPBEAT_ON, r.getDrawable(R.drawable.m1red));
 		loadMarker(DOWNBEAT_OFF, r.getDrawable(R.drawable.m0green));
 		loadMarker(DOWNBEAT_ON, r.getDrawable(R.drawable.m1green));
-		clickMP	= MediaPlayer.create(this.getContext(), R.raw.click);
-		bellMP	= MediaPlayer.create(this.getContext(), R.raw.bell);
-		
-		clickMP.setOnCompletionListener(new OnCompletionListener() {
-		    public void onCompletion(MediaPlayer arg0) {
-		        
-		    }
-		});
-		bellMP.setOnCompletionListener(new OnCompletionListener() {
-		    public void onCompletion(MediaPlayer arg0) {
-		        //Log.i("loguje","koniec pliku");
-		    }
-		});
+		*/
+		if(!Metronome.PLAY_BEATS_IN_METRONOME){
+			clickMP	= MediaPlayer.create(this.getContext(), R.raw.click);
+			bellMP	= MediaPlayer.create(this.getContext(), R.raw.bell);
+			
+			clickMP.setOnCompletionListener(new OnCompletionListener() {
+			    public void onCompletion(MediaPlayer arg0) {  
+			    }
+			});
+			bellMP.setOnCompletionListener(new OnCompletionListener() {
+			    public void onCompletion(MediaPlayer arg0) {
+			    }
+			});
+		}
+		Log.i("ClickView","Initialized succesfully!");
 	}
 	
 	public void setTestView(TextView tv){
 		testView = tv;
+		if(TV_IS_OFF){
+			testView.setVisibility(TextView.INVISIBLE);
+		}
 	}
 	public void reset(){
+		Log.d("ClickView", "reset()");
 		grid = new int [metrum_count];
 		xOffset = (int) ((this.getWidth() / 2) - metrum_count*0.6*mSize);
 		if(xOffset < 0) xOffset = 0;
@@ -98,7 +105,18 @@ public class ClickView extends View {
 		step = -1;
 		this.invalidate();
 	}
+	
 
+	public void setTextViewVisible(boolean setVisible){
+		if(setVisible){
+			testView.setVisibility(TextView.VISIBLE);
+			Log.d("ClickView", "Setting testView VISIBLE");
+		}
+		else{
+			testView.setVisibility(TextView.INVISIBLE);
+			Log.d("ClickView", "Setting testView INVISIBLE");
+		}
+	}
 	public void clearGrid() {
 		for (int x = 0; x < metrum_count; x++) {
 			grid[x] = 0;
@@ -109,27 +127,25 @@ public class ClickView extends View {
 	}
 
 	public void update() {
-	    step++;
-	    if(!Metronome.TEST){
+		clearGrid();
+		step++;
+	    step = step % metrum_count;
+		grid[step]++;
+	    if(!Metronome.PLAY_BEATS_IN_METRONOME){
 	    	playBeat();
 	    }
-	    clearGrid();
-	    nextClick();
+	    
+	    testView.setText(String.valueOf(step+1));
 	}
 	
 	private void playBeat(){
-		if(step % metrum_count == upbeat){
+		if(step == upbeat){
 			bellMP.start();
 		}else{
 			clickMP.start();
 		}
 	}
 	
-	private void nextClick(){
-		step = step % metrum_count;
-		grid[step]++;
-		testView.setText(String.valueOf(step));
-	}
 	public void loadMarker(int key, Drawable marker) {
 		Bitmap bitmap = Bitmap.createBitmap(mSize, mSize, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
@@ -137,12 +153,44 @@ public class ClickView extends View {
 		marker.draw(canvas);
 
 		mMarkerArray[key] = bitmap;
+		
+	}
+	public void reloadMarkers(){
+		Log.i("ClickView", "Reloaded markers");
+		Resources r =this.getContext().getResources();
+		
+		loadMarker(UPBEAT_OFF, r.getDrawable(R.drawable.m0red));
+		loadMarker(UPBEAT_ON, r.getDrawable(R.drawable.m1red));
+		loadMarker(DOWNBEAT_OFF, r.getDrawable(R.drawable.m0green));
+		loadMarker(DOWNBEAT_ON, r.getDrawable(R.drawable.m1green));
 	}
 
 	@Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+
+		Log.i("ClickView","onSizeChanged called");
+		mSize 	= (int) (w/(metrum_count*1.2));
+		Log.i("SIze","equals "+mSize+" width = "+ w);
+		if(mSize<40){
+			mSize = 40;
+		}else if(mSize>80){
+			mSize = 80;
+		}
+		
+		reloadMarkers();
 		xOffset = (int) (w / 2 - metrum_count*1.2*mSize);
 		yOffset = 0;
+		Log.d("ClickView","onSizeChanged completed");
+	}
+	private void adjustSize(){
+		mSize 	= (int) (ClickView.this.getWidth()/(metrum_count*1.2));
+		Log.i("SIze","equals "+mSize);
+		if(mSize<40){
+			mSize = 40;
+		}else if(mSize>80){
+			mSize = 80;
+		}
+		reloadMarkers();
 	}
 	
 	public void onDraw(Canvas canvas) {
@@ -159,6 +207,7 @@ public class ClickView extends View {
 	public void releaseMP(){
 		clickMP.release();
 		bellMP.release();
+		Log.i("ClickView","Released MediaPlayers");
 	}
 	
 	public void setBase(int base){
@@ -176,6 +225,7 @@ public class ClickView extends View {
 	public void setCount(int count){
 		metrum_count = count;
 		grid = new int [metrum_count];
+		adjustSize();
 		xOffset = (int) ((this.getWidth() / 2) - metrum_count*0.6*mSize);
 		if(xOffset < 0) xOffset = 0;
 	}
@@ -186,6 +236,9 @@ public class ClickView extends View {
 	
 	public int getStep(){
 		return step;
+	}
+	public void resetStep(){
+		step=-1;
 	}
 
 }
