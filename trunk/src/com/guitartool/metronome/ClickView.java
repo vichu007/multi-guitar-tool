@@ -24,7 +24,7 @@ import android.widget.TextView;
  *
  */
 public class ClickView extends View {
-	private TextView testView;
+	private TextView takt_View, step_View;
 	private Bitmap[] mMarkerArray = new Bitmap[4];
 	private final Paint mPaint = new Paint();
 	private MediaPlayer clickMP, bellMP;
@@ -35,7 +35,7 @@ public class ClickView extends View {
 	private static final int DOWNBEAT_ON = 1;
 	private static boolean TV_IS_OFF = false;
 
-	private int metrum_base, metrum_count, upbeat, xOffset, yOffset, step;
+	private int metrum_base, metrum_count, upbeat, xOffset, yOffset, step, takt;
 	private int mSize = 60;
 	private int[] grid;
 	
@@ -62,6 +62,7 @@ public class ClickView extends View {
 
 	private void initialize() {
 		step = -1;
+		takt = 0;
 		setCount(4);
 		upbeat = 0;
 		grid = new int[metrum_count];
@@ -90,10 +91,12 @@ public class ClickView extends View {
 		Log.i("ClickView","Initialized succesfully!");
 	}
 	
-	public void setTestView(TextView tv){
-		testView = tv;
+	public void setTextViews(TextView takt, TextView step){
+		takt_View = takt;
+		step_View = step;
 		if(TV_IS_OFF){
-			testView.setVisibility(TextView.INVISIBLE);
+			takt_View.setVisibility(TextView.INVISIBLE);
+			step_View.setVisibility(TextView.INVISIBLE);
 		}
 	}
 	public void reset(){
@@ -103,17 +106,20 @@ public class ClickView extends View {
 		if(xOffset < 0) xOffset = 0;
 		clearGrid();
 		step = -1;
+		takt = 0;
 		this.invalidate();
 	}
 	
 
 	public void setTextViewVisible(boolean setVisible){
 		if(setVisible){
-			testView.setVisibility(TextView.VISIBLE);
+			takt_View.setVisibility(TextView.VISIBLE);
+			step_View.setVisibility(TextView.VISIBLE);
 			Log.d("ClickView", "Setting testView VISIBLE");
 		}
 		else{
-			testView.setVisibility(TextView.INVISIBLE);
+			takt_View.setVisibility(TextView.INVISIBLE);
+			step_View.setVisibility(TextView.INVISIBLE);
 			Log.d("ClickView", "Setting testView INVISIBLE");
 		}
 	}
@@ -129,13 +135,17 @@ public class ClickView extends View {
 	public void update() {
 		clearGrid();
 		step++;
-	    step = step % metrum_count;
+		if(step == metrum_count){
+			takt++;
+			step = step % metrum_count;
+		}
 		grid[step]++;
 	    if(!Metronome.PLAY_BEATS_IN_METRONOME){
 	    	playBeat();
 	    }
 	    
-	    testView.setText(String.valueOf(step+1));
+	    takt_View.setText(" "+String.valueOf(takt)+" ");
+	    step_View.setText(" "+String.valueOf(step+1));
 	}
 	
 	private void playBeat(){
@@ -238,6 +248,7 @@ public class ClickView extends View {
 		return step;
 	}
 	public void resetStep(){
+		takt = 0;
 		step=-1;
 	}
 

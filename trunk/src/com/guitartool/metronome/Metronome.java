@@ -38,7 +38,7 @@ public class Metronome extends Activity {
 	private ToggleButton powerBtn;
 	private Button minusBtn, plusBtn;
 	private SeekBar tempoBar;
-	private TextView tempoTv, stepTv;
+	private TextView tempoTv, step_Tv, takt_Tv, dot_Tv;
 	private ClickView clickView;
 	private Spinner metrumSp, upbeatSp;
 	private MediaPlayer clickMP, bellMP;
@@ -58,9 +58,13 @@ public class Metronome extends Activity {
         	clickMP	= MediaPlayer.create(this.getBaseContext(), R.raw.click);
         	bellMP	= MediaPlayer.create(this.getBaseContext(), R.raw.bell);
         }
-        clickView 	= (ClickView) this.findViewById(R.id.clickView);
-        stepTv		= (TextView) this.findViewById(R.id.testView);
-        clickView.setTestView(stepTv);
+        
+        clickView 	= (ClickView) this.findViewById(R.id.m_clickView);
+        takt_Tv		= (TextView) this.findViewById(R.id.m_taktTv);
+        step_Tv		= (TextView) this.findViewById(R.id.m_stepTv);
+        dot_Tv		= (TextView) this.findViewById(R.id.m_dotTv);
+        
+        clickView.setTextViews(takt_Tv, step_Tv);
         backBtn	  	= (Button) this.findViewById(R.id.metronomeBackBtn);
         minusBtn  	= (Button) this.findViewById(R.id.m_minus_btn);
         plusBtn	  	= (Button) this.findViewById(R.id.m_plus_btn);
@@ -93,8 +97,14 @@ public class Metronome extends Activity {
         backBtn.setTextColor(Color.WHITE);
         backBtn.setTypeface(tf);
         
-        stepTv.setTextColor(Color.WHITE);
-        stepTv.setTypeface(tf);
+        takt_Tv.setTextColor(Color.WHITE);
+        takt_Tv.setTypeface(tf);
+        
+        step_Tv.setTextColor(Color.WHITE);
+        step_Tv.setTypeface(tf);
+        
+        dot_Tv.setTextColor(Color.WHITE);
+        dot_Tv.setTypeface(tf);
         
         tempoTv.setTypeface(tf);
         
@@ -373,7 +383,7 @@ public class Metronome extends Activity {
     }
     
 	private void updateTempoView(){
-		tempoTv.setText(String.valueOf(tempo));
+		tempoTv.setText(" "+String.valueOf(tempo)+" ");
 		tempoBar.setProgress(tempo-MIN_BPM);
 	}
 	private long calculateDelay(){
