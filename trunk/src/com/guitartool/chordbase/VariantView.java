@@ -102,7 +102,6 @@ public class VariantView extends View {
 	public void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		for (int x = 0; x < 6; x++) {
-			
 			for (int y = 0; y < 5; y++) {
 				if (y==0){
 					if (grid[x][y] > -1) {
@@ -115,14 +114,13 @@ public class VariantView extends View {
 					if (grid[x][y] > -1) {
 						canvas.drawBitmap(mMarkerArray[grid[x][y]],
 										  xOffset + x * xSize,
-										  yOffset + y * ySize,
+										  yOffset + ((y-1) * ySize),
 										  mPaint);
 					}
 				}
-				
-			}
-		}
-	}
+			}//loop on y
+		}//loop on x
+	}// end of onDraw
 
 	public void setChord(Chord newChord) {
 		chord = newChord;
@@ -136,6 +134,12 @@ public class VariantView extends View {
 	public void setVariant(int var) {
 		this.invalidate();
 		textView.setText(String.valueOf(chord.variants.get(var).getPosition()));
+		if(chord.variants.get(var).getPosition()>0){
+			VariantView.this.setBackgroundDrawable(this.getContext().getResources().getDrawable(R.drawable.bckv0));
+		}
+		else{
+			VariantView.this.setBackgroundDrawable(this.getContext().getResources().getDrawable(R.drawable.bckv1));
+		}
 		readVariant(var);
 	}
 
@@ -147,6 +151,12 @@ public class VariantView extends View {
 		}
 	}
 
+	/**
+	 * Umieszcza odpowiedni znacznik na strunie
+	 * @param fret
+	 * @param finger
+	 * @param string
+	 */
 	private void markString(int fret, int finger, int string) {
 		switch (fret) {
 		case -10: // BASE_0_MARKER
@@ -173,7 +183,7 @@ public class VariantView extends View {
 		default:
 			grid[string][fret] = finger;
 			break;
-		}
-	}
-
-}
+		}//end of switch
+	}//end of markString
+	
+}//end of class

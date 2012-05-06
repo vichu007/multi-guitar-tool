@@ -6,39 +6,53 @@ import java.util.StringTokenizer;
 import com.guitartool.R;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 public class ChordBase extends Activity {
 	private static final int REQUEST_CODE = 11;
-	private EditText nameEt;//,VarOut;
+	private EditText nameEt;
 	private Button showBtn;
 	private Spinner noteSp, chordSp, variantSp;
 	private String name,resp;
-	private TextView chordnames;
-	private LinearLayout variantLay;
+	private TextView chordnames, nameTf, varTf, noteTf, chordTf, vvo;
 	private VariantView Vview;
-	//private boolean spinners;
     
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chord_db);
         
         //Czêœæ odpowiedzialna za sformu³owanie zapytania
-        nameEt 	= (EditText) this.findViewById(R.id.chordbaseNameStringTf);
         noteSp 	= (Spinner) this.findViewById(R.id.noteIdSp);
         chordSp = (Spinner) this.findViewById(R.id.chordIdSp);
+        
+        ChordNameSpAdapter chordsAdapter = new ChordNameSpAdapter(this,
+        												  android.R.layout.simple_spinner_item,
+        												  this.getResources().getStringArray(R.array.chords));
+        ChordNameSpAdapter notesAdapter = new ChordNameSpAdapter(this,
+        												 android.R.layout.simple_spinner_item,
+        												 this.getResources().getStringArray(R.array.notes));
+    	
+        noteSp.setAdapter(notesAdapter);
+        chordSp.setAdapter(chordsAdapter);
+        
+        nameEt 	= (EditText) this.findViewById(R.id.chordbaseNameStringTf);
+        
        
         showBtn = (Button) this.findViewById(R.id.showBtn);
         showBtn.setOnClickListener(new OnClickListener()
@@ -50,14 +64,49 @@ public class ChordBase extends Activity {
 		});
         
         //Czêœæ wyœwietlaj¹ca wynik
-        variantSp = (Spinner) this.findViewById(R.id.vv_variantSp);
-        chordnames = (TextView) this.findViewById(R.id.vv_chordNames);
-        variantLay	= (LinearLayout) this.findViewById(R.id.vv_main_lay);
-        variantLay.setVisibility(LinearLayout.INVISIBLE);
-        Vview = (VariantView) this.findViewById(R.id.variantView1);
-        Vview.setTextView((TextView)this.findViewById(R.id.vv_output));
-    }
- 
+        variantSp 	= (Spinner) this.findViewById(R.id.vv_variantSp);
+        chordnames 	= (TextView) this.findViewById(R.id.vv_chordNames);
+        Vview 		= (VariantView) this.findViewById(R.id.variantView1);
+        vvo 		= (TextView)this.findViewById(R.id.vv_output);
+        Vview.setTextView(vvo);
+        
+        //Reszta œmieci
+        nameTf		= (TextView) this.findViewById(R.id.chordbaseNameStringLbl);
+        varTf		= (TextView) this.findViewById(R.id.vv_variantTf);
+        noteTf		= (TextView) this.findViewById(R.id.chordbaseNoteLbl);
+        chordTf		= (TextView) this.findViewById(R.id.chordbaseChordIdLbl);
+        
+        //Czcionka i kolor
+        
+        Typeface tf = Typeface.createFromAsset(getAssets(),"fonts/bazgroly_b.ttf");
+        
+        nameEt.setTypeface(tf);
+        nameEt.setTextColor(Color.BLACK);
+        //TODO poprawny inputType
+        nameEt.setInputType(InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE);
+        
+        nameTf.setTypeface(tf);
+        nameTf.setTextColor(Color.WHITE);
+        
+        varTf.setTypeface(tf);
+        varTf.setTextColor(Color.WHITE);
+        
+        noteTf.setTypeface(tf);
+        noteTf.setTextColor(Color.WHITE);
+        
+        chordTf.setTypeface(tf);
+        chordTf.setTextColor(Color.WHITE);
+        
+        showBtn.setTypeface(tf);
+        showBtn.setTextColor(Color.WHITE);
+        
+        chordnames.setTypeface(tf);
+        chordnames.setTextColor(Color.WHITE);
+        
+        vvo.setTypeface(tf);
+        vvo.setTextColor(Color.WHITE);        
+    }//end of onCreate
+    
     private void openParseAct(){
     	getIdFromEditText();
     	Intent intent = new Intent(getApplicationContext(), Parser.class);
@@ -98,7 +147,6 @@ public class ChordBase extends Activity {
     }
 
     private void showChord(Chord in){
-    	variantLay.setVisibility(LinearLayout.VISIBLE);
     	Vview.setChord(in);
     	chordnames.setText(in.getChordNames());
     	ArrayList<CharSequence> data = new ArrayList<CharSequence>();
@@ -106,7 +154,7 @@ public class ChordBase extends Activity {
     		String tmp = Integer.toString(i+1);
     		data.add(tmp);
     	}
-    	ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item,data);
+    	VariantSpAdapter adapter = new VariantSpAdapter(this, android.R.layout.simple_spinner_item,data);
     	variantSp.setAdapter(adapter);
     	variantSp.setOnItemSelectedListener(new OnItemSelectedListener(){
 
@@ -114,42 +162,68 @@ public class ChordBase extends Activity {
             	Vview.update();
             	Vview.setVariant(pos);
             }
-
             public void onNothingSelected(AdapterView<?> parent) {
               // Do nothing.
             }
         });
     }
-    // do usuniêcia
-	@SuppressWarnings("unused")
-	private void showResponse(String s){
-    	if (s.startsWith("-1")){
-    		AlertDialog alert = new AlertDialog.Builder(ChordBase.this)
-            .setTitle(R.string.alert_wrong_chord_title)
-            .setPositiveButton(R.string.alert_wrong_chord_ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    nameEt.setText("");
-                }
-            })
-            .setMessage(R.string.alert_wrong_chord_msg)
-    		.create();
-    		alert.show();
-    	}
-    	else{
-    		AlertDialog alert = new AlertDialog.Builder(ChordBase.this)
-            .setTitle(R.string.alert_wrong_chord_title)
-            .setPositiveButton(R.string.alert_wrong_chord_ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    nameEt.setText("");
-                }
-            })
-            .setMessage(s)
-    		.create();
-    		alert.show();
-    		
-    	}
-    }
+    
+    
+	private class ChordNameSpAdapter extends ArrayAdapter<CharSequence> {
 
+		Typeface myFont =  Typeface.createFromAsset(getAssets(),"fonts/FAD.TTF");
+		
+		public ChordNameSpAdapter(Context context, int textViewResourceId, ArrayList <CharSequence> data) {
+		super(context, textViewResourceId,data);
+		}
+		
+		public ChordNameSpAdapter(Context c, int tvRes, String[] data){
+			super(c, tvRes, data);
+		}
+
+		public TextView getView(int position, View convertView, ViewGroup parent) {
+		TextView v = (TextView) super.getView(position, convertView, parent);
+		v.setTypeface(myFont);
+		v.setTextColor(Color.WHITE);
+		return v;
+		}
+
+		public TextView getDropDownView(int position, View convertView, ViewGroup parent) {
+		TextView v = (TextView) super.getView(position, convertView, parent);
+		v.setTypeface(myFont);
+		return v;
+		}
+
+	}
+
+	private class VariantSpAdapter extends ArrayAdapter<CharSequence> {
+
+		Typeface myFont =  Typeface.createFromAsset(getAssets(),"fonts/bazgroly_b.ttf");
+		
+		public VariantSpAdapter(Context context, int textViewResourceId, ArrayList <CharSequence> data) {
+		super(context, textViewResourceId,data);
+		}
+		
+		public VariantSpAdapter(Context c, int tvRes, String[] data){
+			super(c, tvRes, data);
+		}
+
+		public TextView getView(int position, View convertView, ViewGroup parent) {
+		TextView v = (TextView) super.getView(position, convertView, parent);
+		v.setTypeface(myFont);
+		v.setTextColor(Color.WHITE);
+		return v;
+		}
+
+		public TextView getDropDownView(int position, View convertView, ViewGroup parent) {
+		TextView v = (TextView) super.getView(position, convertView, parent);
+		v.setTypeface(myFont);
+		return v;
+		}
+
+	}
+
+	
     class Chord{
     	private String note_name;
     	private String chord_names;

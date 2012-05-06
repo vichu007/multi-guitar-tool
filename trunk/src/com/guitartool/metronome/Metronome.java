@@ -4,12 +4,16 @@ import java.util.ArrayList;
 
 import com.guitartool.R;
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,7 +29,8 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 public class Metronome extends Activity {
 	static final int MAX_BPM = 250;
 	static final int MIN_BPM = 40;
-	static final boolean TEST = false;
+	static final boolean PLAY_BEATS_IN_METRONOME = true;	//false - odtwarzanie dŸwiêków  przez ClickView
+															//true - odtwarzanie dŸwiêków przez Metronome
 	
 	private int tempo, upbeat;
 	
@@ -33,7 +38,7 @@ public class Metronome extends Activity {
 	private ToggleButton powerBtn;
 	private Button minusBtn, plusBtn;
 	private SeekBar tempoBar;
-	private TextView tempoTv;
+	private TextView tempoTv, stepTv;
 	private ClickView clickView;
 	private Spinner metrumSp, upbeatSp;
 	private MediaPlayer clickMP, bellMP;
@@ -49,12 +54,13 @@ public class Metronome extends Activity {
         setContentView(R.layout.metronome);
         
         //teœcik
-        if(TEST){
+        if(PLAY_BEATS_IN_METRONOME){
         	clickMP	= MediaPlayer.create(this.getBaseContext(), R.raw.click);
         	bellMP	= MediaPlayer.create(this.getBaseContext(), R.raw.bell);
         }
         clickView 	= (ClickView) this.findViewById(R.id.clickView);
-        clickView.setTestView((TextView) this.findViewById(R.id.testView));
+        stepTv		= (TextView) this.findViewById(R.id.testView);
+        clickView.setTestView(stepTv);
         backBtn	  	= (Button) this.findViewById(R.id.metronomeBackBtn);
         minusBtn  	= (Button) this.findViewById(R.id.m_minus_btn);
         plusBtn	  	= (Button) this.findViewById(R.id.m_plus_btn);
@@ -64,12 +70,47 @@ public class Metronome extends Activity {
         metrumSp	= (Spinner) this.findViewById(R.id.m_metrum_spinner);
         upbeatSp	= (Spinner) this.findViewById(R.id.m_upbeat_sp);
         
+        //kolorki, czcionki i teksturki
+        powerBtn.setTextOff("");
+        powerBtn.setTextOn("");
+        
+        Typeface tf = Typeface.createFromAsset(getAssets(),"fonts/bazgroly_b.ttf");
+        
+        SpinnerAdapter metrumAdapter =  new SpinnerAdapter(this,
+				  									android.R.layout.simple_spinner_item,
+				  									this.getResources().getStringArray(R.array.metra));
+        metrumSp.setAdapter(metrumAdapter);
+        
+        powerBtn.setTextColor(Color.WHITE);
+        powerBtn.setTypeface(tf);
+        
+        plusBtn.setTextColor(Color.WHITE);
+        plusBtn.setTypeface(tf);
+        
+        minusBtn.setTextColor(Color.WHITE);
+        minusBtn.setTypeface(tf);
+        
+        backBtn.setTextColor(Color.WHITE);
+        backBtn.setTypeface(tf);
+        
+        stepTv.setTextColor(Color.WHITE);
+        stepTv.setTypeface(tf);
+        
+        tempoTv.setTypeface(tf);
+        
+        //Ustawienie Listenerów wszelakich
         backBtn.setOnClickListener(new OnClickListener()
         {
         	public void onClick(View v)
         	{
-        		mThread.cancel(true);
-        		clickView.releaseMP();
+        		if(powerBtn.isChecked()){
+        			mThread.cancel(true);	
+        		}
+        		if(!PLAY_BEATS_IN_METRONOME){
+        			clickView.releaseMP();
+        		}else{
+        			releaseMP();
+        		}
         		Metronome.this.finish();
         	}
         });
@@ -78,6 +119,7 @@ public class Metronome extends Activity {
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
 				if(isChecked){
+					//powerBtn.setBackgroundDrawable(d)
 					mThread = new MetronomeThread();
 					mThread.execute(calculateDelay());
 				}else{
@@ -303,7 +345,7 @@ public class Metronome extends Activity {
             		}
             		break;
             	}
-            	ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(getBaseContext(), android.R.layout.simple_spinner_item, data);
+            	SpinnerAdapter adapter = new SpinnerAdapter(getBaseContext(), android.R.layout.simple_spinner_item, data);
             	upbeatSp.setAdapter(adapter);
             	resetThread();
             	clickView.refreshDrawableState();
@@ -321,6 +363,7 @@ public class Metronome extends Activity {
             	upbeat = pos;
             	resetThread();
             	clickView.refreshDrawableState();
+            	Log.d("Metronome","Upbeat set to:"+pos);
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
@@ -348,6 +391,39 @@ public class Metronome extends Activity {
 			mThread.execute(calculateDelay());
 		}
 	}
+	private void releaseMP(){
+		clickMP.release();
+		bellMP.release();
+		Log.i("Metronome","Released MediaPlayers");
+	}
+	
+	private class SpinnerAdapter extends ArrayAdapter<CharSequence> {
+
+		Typeface myFont =  Typeface.createFromAsset(getAssets(),"fonts/bazgroly_b.ttf");
+		
+		public SpinnerAdapter(Context context, int textViewResourceId, ArrayList<CharSequence> data) {
+		super(context, textViewResourceId,data);
+		}
+		
+		public SpinnerAdapter(Context c, int tvRes, String[] data){
+			super(c, tvRes, data);
+		}
+
+		public TextView getView(int position, View convertView, ViewGroup parent) {
+		TextView v = (TextView) super.getView(position, convertView, parent);
+		v.setTypeface(myFont);
+		v.setTextColor(Color.WHITE);
+		return v;
+		}
+
+		public TextView getDropDownView(int position, View convertView, ViewGroup parent) {
+		TextView v = (TextView) super.getView(position, convertView, parent);
+		v.setTypeface(myFont);
+		return v;
+		}
+
+	}
+	
 	
 	private class MetronomeThread extends AsyncTask<Long, Void, String> {
 
@@ -384,21 +460,21 @@ public class Metronome extends Activity {
 
 		@Override
 		protected void onProgressUpdate(Void... voids) {
-			if(TEST){
-				if (clickView.getStep() % clickView.getCount() == upbeat){
+			clickView.update();
+			if(PLAY_BEATS_IN_METRONOME){
+				if (clickView.getStep() == upbeat){
 					bellMP.start();
 				}else{
 					clickMP.start();
 				}
 				
 			}
-			clickView.update();
 			clickView.invalidate();
 		}
 	
 		@Override
 		protected void onCancelled(){
-			clickView.reset();
+			clickView.resetStep();
 			Log.i("MetronomeThread", "onCancelled -> anulowa³em w¹tek");
 		}
 	}//end of MetronomeThread

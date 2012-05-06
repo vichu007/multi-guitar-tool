@@ -19,7 +19,6 @@ public class RequestParser extends Activity {
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.loading);
 		extra1 = getIntent().getIntExtra("note", -1);
 		extra2 = getIntent().getIntExtra("chord", -1);
 		prepareResponse(extra1 , extra2);

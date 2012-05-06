@@ -28,7 +28,6 @@ public class Parser extends Activity {
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		//setContentView(R.layout.loading);
 		inputString = getIntent().getStringExtra("inputString");
 		note = -1;
 		chord = -1;
@@ -37,7 +36,6 @@ public class Parser extends Activity {
 		intent.putExtra("note", note );
 		intent.putExtra("chord", chord);
 		startActivityForResult(intent, REQUEST_CODE);
-		//finish();
 	}
 	
 	private void prepareResponse(String rtrn) {
